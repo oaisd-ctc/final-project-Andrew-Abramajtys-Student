@@ -252,6 +252,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &269836224 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3489491474034447615, guid: 278480b53a3ad5e49a518b121cc560e4, type: 3}
+  m_PrefabInstance: {fileID: 7372072428424637543}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &269836225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 269836224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43a773f7346bc30479896ed11207900d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hp: 100
+  speed: 2.5
+  rb: {fileID: 269836226}
+  atk: 1
+  def: 0
+  jumpForce: 0
+  checkRadius: 0.2
+  groundCheck: {fileID: 0}
+  isGrounded: 0
+--- !u!50 &269836226 stripped
+Rigidbody2D:
+  m_CorrespondingSourceObject: {fileID: 297392760884800350, guid: 278480b53a3ad5e49a518b121cc560e4, type: 3}
+  m_PrefabInstance: {fileID: 7372072428424637543}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &357345500
 GameObject:
   m_ObjectHideFlags: 0
@@ -352,6 +383,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 297392760884800350, guid: 278480b53a3ad5e49a518b121cc560e4, type: 3}
+      propertyPath: m_Mass
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 3489491474034447615, guid: 278480b53a3ad5e49a518b121cc560e4, type: 3}
       propertyPath: m_Name
       value: Player
@@ -399,7 +434,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3489491474034447615, guid: 278480b53a3ad5e49a518b121cc560e4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 269836225}
   m_SourcePrefab: {fileID: 100100000, guid: 278480b53a3ad5e49a518b121cc560e4, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
