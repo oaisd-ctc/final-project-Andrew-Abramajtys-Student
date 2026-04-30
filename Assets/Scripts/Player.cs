@@ -23,6 +23,8 @@ public class Player : MonoBehaviour
     public bool isGrounded = false;
     [SerializeField] private int jumpsRemaining = 2;
     private bool isAlive = true;
+    public Sprite deathSprite;
+    private SpriteRenderer spriteRenderer;
 
     void Start()
     {
@@ -30,6 +32,7 @@ public class Player : MonoBehaviour
         playerCollider = GetComponent<Collider2D>();
         hp = Mathf.Clamp(hp, 0f, maxHp);
         UpdateHealthUI();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void Update()
@@ -135,6 +138,6 @@ public class Player : MonoBehaviour
     {
         isAlive = false;
         Debug.Log("Player has died.");
-        // Add death handling here, such as disabling movement or playing an animation.
+        spriteRenderer.sprite = deathSprite;
     }
 }
