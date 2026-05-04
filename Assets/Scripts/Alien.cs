@@ -5,6 +5,7 @@ using UnityEngine;
 public class Alien : MonoBehaviour
 {
     public Transform player;
+    public GameObject thisThing;
     public float speed = 3f;
     public float chaseDistance = 5f;
     public float jumpForce = 5f;
@@ -34,5 +35,19 @@ public class Alien : MonoBehaviour
                 rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             }
         }
+    }
+    public void TakeDamage(float damage)
+    {
+        hp = hp - damage;
+        print("slice");
+        if (hp <= 0)
+        {
+            Die();
+        }
+        
+    }
+    void Die()
+    {
+        Destroy(thisThing);
     }
 }
