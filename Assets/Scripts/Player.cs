@@ -25,6 +25,8 @@ public class Player : MonoBehaviour
     private bool isAlive = true;
     public Sprite deathSprite;
     private SpriteRenderer spriteRenderer;
+    private bool facingRight = true;
+    public Collider2D attackCollider;
 
     void Start()
     {
@@ -33,6 +35,8 @@ public class Player : MonoBehaviour
         hp = Mathf.Clamp(hp, 0f, maxHp);
         UpdateHealthUI();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        // Get the attack collider from child objects or this object
+        attackCollider = GetComponentInChildren<Collider2D>();
     }
 
     void Update()
@@ -53,6 +57,16 @@ public class Player : MonoBehaviour
         float moveX = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
         float moveZ = Input.GetAxis("Vertical") * speed * Time.deltaTime;
         transform.Translate(moveX, 0, moveZ);
+
+        // Flip player based on movement direction
+        if (Input.GetAxis("Horizontal") > 0 && !facingRight)
+        {
+            Flip();
+        }
+        else if (Input.GetAxis("Horizontal") < 0 && facingRight)
+        {
+            Flip();
+        }
 
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, groundLayer);
         if (isGrounded)
@@ -139,5 +153,13 @@ public class Player : MonoBehaviour
         isAlive = false;
         Debug.Log("Player has died.");
         spriteRenderer.sprite = deathSprite;
+    }
+
+    private void Flip()
+    {
+        facingRight = !facingRight;
+        Vector3 scale = transform.localScale;
+        scale.x *= -1;
+        transform.localScale = scale;
     }
 }
