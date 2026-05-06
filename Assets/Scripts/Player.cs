@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class Player : MonoBehaviour
 {
@@ -28,6 +29,8 @@ public class Player : MonoBehaviour
     private bool facingRight = true;
     public Collider2D attackCollider;
     private Animator anim;
+    public UnityEvent OnDie = new UnityEvent();
+    public UnityEvent OnHit = new UnityEvent();
 
     void Start()
     {
@@ -112,7 +115,8 @@ public class Player : MonoBehaviour
         }
         if (collision.gameObject.CompareTag("Kill"))
         {
-            TakeDamage(hp);
+            TakeDamage(999f);
+            print("ded");
         }
     }
 
@@ -139,7 +143,7 @@ public class Player : MonoBehaviour
     {
         hp = Mathf.Clamp(hp - amount, 0f, maxHp);
         UpdateHealthUI();
-
+        OnHit.Invoke();
         if (hp <= 0f)
         {
             Die();
@@ -164,9 +168,10 @@ public class Player : MonoBehaviour
 
     private void Die()
     {
+        anim.SetBool("die", true);
         isAlive = false;
+        OnDie.Invoke();
         print("u r ded. not big soup rice.");
-        anim.SetTrigger("die");
     }
 
     private void Flip()

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerAttack : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class PlayerAttack : MonoBehaviour
     private float timeToAttack = 0.25f;
     private float timer = 0f;
     private Animator anim;
+    public UnityEvent OnAttack = new UnityEvent();
     // Start is called before the first frame update
     void Start()
     {
@@ -39,5 +41,6 @@ public class PlayerAttack : MonoBehaviour
         attacking = true;
         attackArea.SetActive(true);
         print("swing");
+        OnAttack.Invoke();
     }
 }
