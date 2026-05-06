@@ -8,10 +8,11 @@ public class PlayerAttack : MonoBehaviour
     private bool attacking = false;
     private float timeToAttack = 0.25f;
     private float timer = 0f;
+    private Animator anim;
     // Start is called before the first frame update
     void Start()
     {
-        
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -20,6 +21,7 @@ public class PlayerAttack : MonoBehaviour
         if (Input.GetButtonDown("Fire1") && !attacking)
         {
             Attack();
+            anim.SetTrigger("attack");
         }
         if (attacking)
         {

@@ -27,11 +27,13 @@ public class Player : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private bool facingRight = true;
     public Collider2D attackCollider;
+    private Animator anim;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         playerCollider = GetComponent<Collider2D>();
+        anim = GetComponent<Animator>();
         hp = Mathf.Clamp(hp, 0f, maxHp);
         UpdateHealthUI();
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -57,6 +59,14 @@ public class Player : MonoBehaviour
         float moveX = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
         float moveZ = Input.GetAxis("Vertical") * speed * Time.deltaTime;
         transform.Translate(moveX, 0, moveZ);
+        if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+        {
+            anim.SetBool("isRunning", true);
+        }
+        else
+        {
+            anim.SetBool("isRunning", false);
+        }
 
         // Flip player based on movement direction
         if (Input.GetAxis("Horizontal") > 0 && !facingRight)
@@ -99,6 +109,10 @@ public class Player : MonoBehaviour
         {
             TakeDamage(10f);
             StartCoroutine(InvincibilityCoroutine(collision.collider));
+        }
+        if (collision.gameObject.CompareTag("Kill"))
+        {
+            TakeDamage(hp);
         }
     }
 
@@ -151,8 +165,8 @@ public class Player : MonoBehaviour
     private void Die()
     {
         isAlive = false;
-        Debug.Log("Player has died.");
-        spriteRenderer.sprite = deathSprite;
+        print("u r ded. not big soup rice.");
+        anim.SetTrigger("die");
     }
 
     private void Flip()
