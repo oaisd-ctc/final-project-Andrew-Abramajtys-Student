@@ -16,7 +16,6 @@ public class Alien : MonoBehaviour
     public float checkRadius = 0.2f;
     private bool isGrounded;
     public float hp;
-    public UnityEvent OnHit = new UnityEvent();
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -43,7 +42,6 @@ public class Alien : MonoBehaviour
         hp = hp - damage;
         print("slice");
         if (hp <= 0)
-        OnHit.Invoke();
         {
             Die();
         }
