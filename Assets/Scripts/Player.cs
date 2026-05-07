@@ -9,7 +9,8 @@ public class Player : MonoBehaviour
     public float maxHp = 100f;
     public float hp = 100f;
     public Text healthText;
-    public float speed = 5f;
+    public float baseSpeed;
+    private float speed;
     public float invincibilityDuration = 1f;
     private bool isInvincible = false;
     private Rigidbody2D rb;
@@ -52,11 +53,11 @@ public class Player : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            speed = 10f;
+            speed = baseSpeed * 2;
         }
         else
         {
-            speed = 5f;
+            speed = baseSpeed;
         }
 
         float moveX = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
