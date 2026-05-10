@@ -176,7 +176,7 @@ MonoBehaviour:
   thisThing: {fileID: 1215903888096021142}
   speed: 4
   chaseDistance: 7.5
-  jumpForce: 4
+  jumpForce: 5
   groundCheck: {fileID: 1219720056815106242}
   groundLayer:
     serializedVersion: 2
