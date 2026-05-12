@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
+using TMPro;
 
 public class Player : MonoBehaviour
 {
@@ -30,8 +32,44 @@ public class Player : MonoBehaviour
     private bool facingRight = true;
     public Collider2D attackCollider;
     private Animator anim;
+    public TextMeshProUGUI killStreakText;
+    private float lastKillStreakTime;
+    public int killCount;
+    public int killStreak;
     public UnityEvent OnDie = new UnityEvent();
     public UnityEvent OnHit = new UnityEvent();
+    public Animator killStreakAnim;
+    private InputSystem_Actions inputSystem_Actions;
+    private InputAction moveAction;
+    private InputAction sprintAction;
+    private InputAction jumpAction;
+
+    void Awake()
+    {
+        inputSystem_Actions = new InputSystem_Actions();
+    }
+
+    void OnEnable()
+    {
+        if (inputSystem_Actions == null)
+        {
+            inputSystem_Actions = new InputSystem_Actions();
+        }
+        
+        moveAction = inputSystem_Actions.Player.Move;
+        sprintAction = inputSystem_Actions.Player.Sprint;
+        jumpAction = inputSystem_Actions.Player.Jump;
+        
+        inputSystem_Actions.Player.Enable();
+    }
+
+    void OnDisable()
+    {
+        if (inputSystem_Actions != null)
+        {
+            inputSystem_Actions.Player.Disable();
+        }
+    }
 
     void Start()
     {
@@ -43,6 +81,9 @@ public class Player : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         // Get the attack collider from child objects or this object
         attackCollider = GetComponentInChildren<Collider2D>();
+        killCount = 0;
+        killStreak = 0;
+        killStreakText.text = "";
     }
 
     void Update()
@@ -51,19 +92,18 @@ public class Player : MonoBehaviour
         {
             return; // Skip update if player is dead
         }
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            speed = baseSpeed * 2;
-        }
-        else
-        {
-            speed = baseSpeed;
-        }
+        
+        // Get input values from Input System
+        Vector2 moveInput = moveAction.ReadValue<Vector2>();
+        bool isSprinting = sprintAction.IsPressed();
+        
+        speed = isSprinting ? baseSpeed * 2 : baseSpeed;
 
-        float moveX = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
-        float moveZ = Input.GetAxis("Vertical") * speed * Time.deltaTime;
+        float moveX = moveInput.x * speed * Time.deltaTime;
+        float moveZ = moveInput.y * speed * Time.deltaTime;
         transform.Translate(moveX, 0, moveZ);
-        if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+        
+        if (moveInput.x != 0 || moveInput.y != 0)
         {
             anim.SetBool("isRunning", true);
         }
@@ -73,11 +113,11 @@ public class Player : MonoBehaviour
         }
 
         // Flip player based on movement direction
-        if (Input.GetAxis("Horizontal") > 0 && !facingRight)
+        if (moveInput.x > 0 && !facingRight)
         {
             Flip();
         }
-        else if (Input.GetAxis("Horizontal") < 0 && facingRight)
+        else if (moveInput.x < 0 && facingRight)
         {
             Flip();
         }
@@ -88,7 +128,7 @@ public class Player : MonoBehaviour
             jumpsRemaining = 2;
         }
 
-        if (Input.GetButtonDown("Jump") && jumpsRemaining >= 1)
+        if (jumpAction.WasPressedThisFrame() && jumpsRemaining >= 1)
         {
             if (!isGrounded)
             {
@@ -104,6 +144,10 @@ public class Player : MonoBehaviour
                 rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             }
             jumpsRemaining--;
+        }
+        if (killStreak > 0 && Time.time - lastKillStreakTime > 5f)
+        {
+            ResetKillStreak();
         }
     }
 
@@ -181,5 +225,36 @@ public class Player : MonoBehaviour
         Vector3 scale = transform.localScale;
         scale.x *= -1;
         transform.localScale = scale;
+    }
+    public void ConfirmKill()
+    {
+        killCount++;
+        killStreak++;
+        lastKillStreakTime = Time.time;
+        killStreakAnim.SetTrigger("Plus");
+        UpdateKillStreakUI();
+        
+        // Heal 10 health every 3 kills
+        if (killCount % 3 == 0)
+        {
+            Heal(10f);
+        }
+    }
+    public void ResetKillStreak()
+    {
+        killStreak = 0;
+        UpdateKillStreakUI();
+    }
+
+    private void UpdateKillStreakUI()
+    {
+        if (killStreakText != null)
+        {
+            killStreakText.text = "Kill Streak: " + killStreak;
+            if (killStreak == 0)
+            {
+                killStreakText.text = "";
+            }
+        }
     }
 }

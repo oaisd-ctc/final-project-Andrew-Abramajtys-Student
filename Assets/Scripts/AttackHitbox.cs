@@ -7,6 +7,8 @@ public class AttackHitbox : MonoBehaviour
 {
     public float damage;
     public UnityEvent OnHit = new UnityEvent();
+
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Enemy"))

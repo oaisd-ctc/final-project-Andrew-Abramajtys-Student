@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Events;
 
 public class PlayerAttack : MonoBehaviour
@@ -11,6 +12,33 @@ public class PlayerAttack : MonoBehaviour
     private float timer = 0f;
     private Animator anim;
     public UnityEvent OnAttack = new UnityEvent();
+    private InputSystem_Actions inputSystem_Actions;
+    private InputAction attackAction;
+    
+    void Awake()
+    {
+        inputSystem_Actions = new InputSystem_Actions();
+    }
+    
+    void OnEnable()
+    {
+        if (inputSystem_Actions == null)
+        {
+            inputSystem_Actions = new InputSystem_Actions();
+        }
+        
+        attackAction = inputSystem_Actions.Player.Attack;
+        inputSystem_Actions.Player.Enable();
+    }
+    
+    void OnDisable()
+    {
+        if (inputSystem_Actions != null)
+        {
+            inputSystem_Actions.Player.Disable();
+        }
+    }
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -20,7 +48,7 @@ public class PlayerAttack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Fire1") && !attacking)
+        if (attackAction.WasPressedThisFrame() && !attacking)
         {
             Attack();
             anim.SetTrigger("attack");

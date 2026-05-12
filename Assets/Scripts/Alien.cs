@@ -16,6 +16,7 @@ public class Alien : MonoBehaviour
     public float checkRadius = 0.2f;
     private bool isGrounded;
     public float hp;
+    public UnityEvent OnDie = new UnityEvent();
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -49,6 +50,7 @@ public class Alien : MonoBehaviour
     }
     void Die()
     {
+        OnDie.Invoke();
         Destroy(thisThing);
     }
 }
