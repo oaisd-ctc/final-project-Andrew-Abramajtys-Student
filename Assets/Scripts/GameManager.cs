@@ -43,6 +43,10 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(sceneBuildIndex);
     }
+    public static void RestartScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
     public static void Quit()
     {
         Application.Quit();

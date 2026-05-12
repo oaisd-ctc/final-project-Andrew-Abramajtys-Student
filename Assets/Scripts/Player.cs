@@ -145,7 +145,7 @@ public class Player : MonoBehaviour
             }
             jumpsRemaining--;
         }
-        if (killStreak > 0 && Time.time - lastKillStreakTime > 5f)
+        if (killStreak > 0 && Time.time - lastKillStreakTime > 3f)
         {
             ResetKillStreak();
         }

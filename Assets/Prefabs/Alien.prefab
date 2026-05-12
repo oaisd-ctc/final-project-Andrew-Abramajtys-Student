@@ -174,7 +174,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   thisThing: {fileID: 1215903888096021142}
-  speed: 4
+  speed: 5
   chaseDistance: 7.5
   jumpForce: 5
   groundCheck: {fileID: 1219720056815106242}
@@ -182,7 +182,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   checkRadius: 0.2
-  hp: 30
+  hp: 50
   OnDie:
     m_PersistentCalls:
       m_Calls:
