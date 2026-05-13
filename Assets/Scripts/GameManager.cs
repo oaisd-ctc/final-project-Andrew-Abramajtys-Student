@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.InputSystem;
 using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
@@ -9,23 +8,10 @@ public class GameManager : MonoBehaviour
     public UnityEvent Unpause = new UnityEvent();
     public UnityEvent DeathScreen = new UnityEvent();
     private bool isPaused = false;
-    private InputAction pauseAction;
-    
-    void OnEnable()
-    {
-        var inputMap = InputSystem.actions;
-        pauseAction = inputMap.FindAction("UI/Cancel");
-        if (pauseAction != null) pauseAction.Enable();
-    }
-    
-    void OnDisable()
-    {
-        if (pauseAction != null) pauseAction.Disable();
-    }
     
     void Update()
     {
-        if (pauseAction != null && pauseAction.WasPressedThisFrame())
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (isPaused)
             {

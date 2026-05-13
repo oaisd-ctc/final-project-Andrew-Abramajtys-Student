@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
-using UnityEngine.InputSystem;
 using TMPro;
 
 public class Player : MonoBehaviour
@@ -39,36 +38,13 @@ public class Player : MonoBehaviour
     public UnityEvent OnDie = new UnityEvent();
     public UnityEvent OnHit = new UnityEvent();
     public Animator killStreakAnim;
-    private InputSystem_Actions inputSystem_Actions;
-    private InputAction moveAction;
-    private InputAction sprintAction;
-    private InputAction jumpAction;
-
-    void Awake()
-    {
-        inputSystem_Actions = new InputSystem_Actions();
-    }
 
     void OnEnable()
     {
-        if (inputSystem_Actions == null)
-        {
-            inputSystem_Actions = new InputSystem_Actions();
-        }
-        
-        moveAction = inputSystem_Actions.Player.Move;
-        sprintAction = inputSystem_Actions.Player.Sprint;
-        jumpAction = inputSystem_Actions.Player.Jump;
-        
-        inputSystem_Actions.Player.Enable();
     }
 
     void OnDisable()
     {
-        if (inputSystem_Actions != null)
-        {
-            inputSystem_Actions.Player.Disable();
-        }
     }
 
     void Start()
@@ -93,17 +69,16 @@ public class Player : MonoBehaviour
             return; // Skip update if player is dead
         }
         
-        // Get input values from Input System
-        Vector2 moveInput = moveAction.ReadValue<Vector2>();
-        bool isSprinting = sprintAction.IsPressed();
+        // Get input values from old Input system
+        float moveX = Input.GetAxis("Horizontal");
+        bool isSprinting = Input.GetKey(KeyCode.LeftShift);
         
         speed = isSprinting ? baseSpeed * 2 : baseSpeed;
 
-        float moveX = moveInput.x * speed * Time.deltaTime;
-        float moveZ = moveInput.y * speed * Time.deltaTime;
-        transform.Translate(moveX, 0, moveZ);
+        // Apply movement using Rigidbody2D velocity
+        rb.velocity = new Vector2(moveX * speed, rb.velocity.y);
         
-        if (moveInput.x != 0 || moveInput.y != 0)
+        if (moveX != 0)
         {
             anim.SetBool("isRunning", true);
         }
@@ -113,11 +88,11 @@ public class Player : MonoBehaviour
         }
 
         // Flip player based on movement direction
-        if (moveInput.x > 0 && !facingRight)
+        if (moveX > 0 && !facingRight)
         {
             Flip();
         }
-        else if (moveInput.x < 0 && facingRight)
+        else if (moveX < 0 && facingRight)
         {
             Flip();
         }
@@ -128,7 +103,7 @@ public class Player : MonoBehaviour
             jumpsRemaining = 2;
         }
 
-        if (jumpAction.WasPressedThisFrame() && jumpsRemaining >= 1)
+        if (Input.GetKeyDown(KeyCode.Space) && jumpsRemaining >= 1)
         {
             if (!isGrounded)
             {
