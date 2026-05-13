@@ -38,15 +38,6 @@ public class Player : MonoBehaviour
     public UnityEvent OnDie = new UnityEvent();
     public UnityEvent OnHit = new UnityEvent();
     public Animator killStreakAnim;
-
-    void OnEnable()
-    {
-    }
-
-    void OnDisable()
-    {
-    }
-
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
