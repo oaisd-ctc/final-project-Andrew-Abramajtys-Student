@@ -101,7 +101,7 @@ MonoBehaviour:
   Heal:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 3405600939791415505, guid: 278480b53a3ad5e49a518b121cc560e4, type: 3}
         m_TargetAssemblyTypeName: Player, Assembly-CSharp
         m_MethodName: Heal
         m_Mode: 4
