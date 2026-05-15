@@ -38,13 +38,6 @@ public class Alien : MonoBehaviour
             }
         }
     }
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("Kill"))
-        {
-            TakeDamage(999f);
-        }
-    }
     public void TakeDamage(float damage)
     {
         hp = hp - damage;
