@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
 {
     public float maxHp = 100f;
     public float hp = 100f;
+    public float killstreakHeal;
     public Text healthText;
     public float baseSpeed;
     private float speed;
@@ -63,7 +64,15 @@ public class Player : MonoBehaviour
         // Get input values from old Input system
         float moveX = Input.GetAxis("Horizontal");
         bool isSprinting = Input.GetKey(KeyCode.LeftShift);
-        
+        if (isSprinting == true)
+        {
+            anim.SetBool("Sprinting", true);
+        }
+        else
+        {
+            anim.SetBool("Sprinting", false);
+        }
+
         speed = isSprinting ? baseSpeed * 2 : baseSpeed;
 
         // Apply movement using Rigidbody2D velocity
@@ -123,6 +132,19 @@ public class Player : MonoBehaviour
         {
             TakeDamage(10f);
             StartCoroutine(InvincibilityCoroutine(collision.collider));
+        }
+        if (collision.gameObject.CompareTag("Kill"))
+        {
+            TakeDamage(999f);
+            print("ded");
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy") && !isInvincible)
+        {
+            TakeDamage(10f);
+            StartCoroutine(InvincibilityCoroutine(collision));
         }
         if (collision.gameObject.CompareTag("Kill"))
         {
@@ -203,7 +225,7 @@ public class Player : MonoBehaviour
         // Heal 10 health every 3 kills
         if (killCount % 3 == 0)
         {
-            Heal(10f);
+            Heal(killstreakHeal);
         }
     }
     public void ResetKillStreak()

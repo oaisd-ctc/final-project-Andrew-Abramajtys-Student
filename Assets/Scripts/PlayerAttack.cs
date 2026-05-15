@@ -7,7 +7,7 @@ public class PlayerAttack : MonoBehaviour
 {
     public GameObject attackArea;
     private bool attacking = false;
-    private float timeToAttack = 0.25f;
+    private float timeToAttack = 0.4f;
     private float timer = 0f;
     private Animator anim;
     public UnityEvent OnAttack = new UnityEvent();

@@ -179,6 +179,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHp: 100
   hp: 100
+  killstreakHeal: 15
   healthText: {fileID: 0}
   baseSpeed: 7.5
   invincibilityDuration: 1
@@ -316,7 +317,7 @@ MonoBehaviour:
   DelayedDeath:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 2145891862813402321, guid: 9f605fd319a19fe4ab067d54d651ebe3, type: 3}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: PlayerDeath
         m_Mode: 1
