@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - Kill
   - goal
+  - PlayerAttack
   layers:
   - Default
   - TransparentFX
